@@ -7,7 +7,7 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/dgrijalva/jwt-go/request"
-	"github.com/ibraheamkh/clinicy"
+	"github.com/ibraheamkh/akwad"
 )
 
 //TODO: generate a key
@@ -137,11 +137,11 @@ func UserRoleMiddleware(next http.Handler) http.Handler {
 
 //TokenService implement token service
 type TokenService struct {
-	AccountService clinicy.AccountService
+	AccountService akwad.AccountService
 }
 
 //CreateToken creates a token for the given user
-func (s *TokenService) CreateToken(user *clinicy.Account) (string, error) {
+func (s *TokenService) CreateToken(user *akwad.Account) (string, error) {
 
 	//TODO improve this implementaion && test it
 
@@ -174,7 +174,7 @@ func (s *TokenService) CreateToken(user *clinicy.Account) (string, error) {
 }
 
 //GetUser gets a user based on a given token
-func (s *TokenService) GetUser(tokenStr string) (*clinicy.Account, error) {
+func (s *TokenService) GetUser(tokenStr string) (*akwad.Account, error) {
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		// check token signing method etc
 		return mySigningKey, nil

@@ -1,4 +1,4 @@
-package clinicy
+package akwad
 
 import "github.com/graphql-go/graphql"
 

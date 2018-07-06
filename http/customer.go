@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/ibraheamkh/clinicy"
-	"github.com/ibraheamkh/clinicy/security"
+	"github.com/ibraheamkh/akwad"
+	"github.com/ibraheamkh/akwad/security"
 )
 
 func (h *Handler) customerAuthHandler(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +27,7 @@ func (h *Handler) customerAuthHandler(w http.ResponseWriter, r *http.Request) {
 	customer, _ := h.CustomerService.GetCustomerByMobile(requestTemplate.Mobile)
 	if customer == nil {
 		// check is user exist or create one for him
-		newCustomer := &clinicy.Customer{}
+		newCustomer := &akwad.Customer{}
 		newCustomer.Account.Mobile = requestTemplate.Mobile
 		err := h.CustomerService.CreateCustomerAccount(newCustomer)
 		if err != nil {
@@ -47,7 +47,7 @@ func (h *Handler) customerAuthHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println(customer.ID)
-	newSession := &clinicy.Session{
+	newSession := &akwad.Session{
 		AccountID: customer.ID,
 		SessionID: sessionID,
 		OTP:       otp,

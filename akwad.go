@@ -1,4 +1,4 @@
-package clinicy
+package akwad
 
 //@author ibrahim
 // Clinicy models

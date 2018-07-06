@@ -21,6 +21,7 @@ func PopulateDB(s *mgo.Session) error {
 	return nil
 }
 
+//TODO create more users
 /*
 func populateDB(session *mgo.Session) {
 	log.Println("Populating DB")

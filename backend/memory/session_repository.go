@@ -1,22 +1,22 @@
 package memory
 
-import "github.com/ibraheamkh/clinicy"
+import "github.com/ibraheamkh/akwad"
 
-func NewSessionRepository(presistantRepository clinicy.SessionService) *SessionRepository {
-	return &SessionRepository{make(map[string]*clinicy.Session, 0), presistantRepository}
+func NewSessionRepository(presistantRepository akwad.SessionService) *SessionRepository {
+	return &SessionRepository{make(map[string]*akwad.Session, 0), presistantRepository}
 }
 
 type SessionRepository struct {
-	sessionsMap       map[string]*clinicy.Session
-	presistantService clinicy.SessionService
+	sessionsMap       map[string]*akwad.Session
+	presistantService akwad.SessionService
 }
 
-func (s *SessionRepository) CreateSession(newSession *clinicy.Session) error {
+func (s *SessionRepository) CreateSession(newSession *akwad.Session) error {
 	s.sessionsMap[newSession.SessionID] = newSession
 	return s.presistantService.CreateSession(newSession)
 }
 
-func (s *SessionRepository) GetSession(sessionID string) (session *clinicy.Session, err error) {
+func (s *SessionRepository) GetSession(sessionID string) (session *akwad.Session, err error) {
 	// searches for a given session in memory, and if not found then search in the presistant storage
 
 	session = s.sessionsMap[sessionID]
@@ -33,7 +33,7 @@ func (s *SessionRepository) GetSession(sessionID string) (session *clinicy.Sessi
 	return
 }
 
-func (s *SessionRepository) UpdateSession(updatedSession *clinicy.Session) error {
+func (s *SessionRepository) UpdateSession(updatedSession *akwad.Session) error {
 	s.sessionsMap[updatedSession.SessionID] = updatedSession
 	return s.presistantService.UpdateSession(updatedSession)
 }

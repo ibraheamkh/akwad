@@ -3,7 +3,7 @@ package mongo
 import (
 	"log"
 
-	"github.com/ibraheamkh/clinicy"
+	"github.com/ibraheamkh/akwad"
 	"gopkg.in/mgo.v2/bson"
 
 	mgo "gopkg.in/mgo.v2"
@@ -14,7 +14,7 @@ type CustomerRepository struct {
 }
 
 //CreateCustomerAccount creates a customer account in the db
-func (s *CustomerRepository) CreateCustomerAccount(newCustomer *clinicy.Customer) error {
+func (s *CustomerRepository) CreateCustomerAccount(newCustomer *akwad.Customer) error {
 	log.Println("Creating customer account")
 	//copy the session
 	newCustomer.ID = bson.NewObjectId().Hex()
@@ -23,22 +23,22 @@ func (s *CustomerRepository) CreateCustomerAccount(newCustomer *clinicy.Customer
 	defer session.Close()
 
 	//collection users
-	c := session.DB("clinicy").C("customers")
+	c := session.DB("akwad").C("customers")
 
 	err := c.Insert(newCustomer)
 
 	return err
 }
 
-func (s *CustomerRepository) GetCustomerByMobile(mobile string) (*clinicy.Customer, error) {
+func (s *CustomerRepository) GetCustomerByMobile(mobile string) (*akwad.Customer, error) {
 
 	session := s.Session.Copy()
 
 	defer session.Close()
 
-	result := &clinicy.Customer{}
+	result := &akwad.Customer{}
 	//collection users
-	c := session.DB("clinicy").C("customers")
+	c := session.DB("akwad").C("customers")
 
 	err := c.Find(bson.M{"account.mobile": mobile}).One(result)
 	return result, err

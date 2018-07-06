@@ -14,8 +14,8 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/ibraheamkh/clinicy"
-	"github.com/ibraheamkh/clinicy/graphql"
+	"github.com/ibraheamkh/akwad"
+	"github.com/ibraheamkh/akwad/graphql"
 )
 
 //Here we handle routing and mapping http requests to functions
@@ -27,10 +27,10 @@ import (
 //Handler represents an HTTP API interface for our app. implements ServeHTTP
 type Handler struct {
 	Router          *chi.Mux
-	CustomerService clinicy.CustomerService
-	SessionService  clinicy.SessionService
-	TokenService    clinicy.TokenService
-	GraphQLService  clinicy.GraphQLService
+	CustomerService akwad.CustomerService
+	SessionService  akwad.SessionService
+	TokenService    akwad.TokenService
+	GraphQLService  akwad.GraphQLService
 }
 
 //ServeHTTP currently just a wrapper for chi.Mux.ServeHTTP
@@ -39,33 +39,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 //the router
-// func NewAPIHandler(h *Handler) *Handler {
-// 	r := chi.NewRouter()
-// 	r.Use(middleware.RequestID)
-// 	r.Use(middleware.RealIP)
-// 	r.Use(middleware.Logger)
-// 	r.Use(middleware.Recoverer)
-
-// 	// Routes with no authentication
-// 	r.Route("/customer", func(r chi.Router) {
-// 		r.Route("/auth", func(r chi.Router) {
-// 			r.Post("/", h.customerAuthHandler)
-// 			r.Route("/verify-sms", func(r chi.Router) {
-// 				r.Post("/", h.customerAuthVerifySMSHandler)
-// 			})
-// 		})
-
-// 		r.Route("/orders", func(r chi.Router) {
-// 			r.Use(h.authorizationHandler)
-// 			r.Post("/", h.customerNewOrderHandler)
-// 			r.Get("/", h.customerOrdersHandler)
-// 		})
-// 	})
-
-// 	h.Router = r
-// 	return h
-// }
-
 func NewAPIHandler(h *Handler) *Handler {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
@@ -76,27 +49,26 @@ func NewAPIHandler(h *Handler) *Handler {
 	// Routes with no authentication
 	r.Route("/customer", func(r chi.Router) {
 		r.Route("/auth", func(r chi.Router) {
-			// r.Post("/", h.customerAuthHandler)
-			// r.Route("/verify-sms", func(r chi.Router) {
-			// 	r.Post("/", h.customerAuthVerifySMSHandler)
-			// })
+			r.Post("/", h.customerAuthHandler)
+			r.Route("/verify-sms", func(r chi.Router) {
+				r.Post("/", h.customerAuthVerifySMSHandler)
+			})
 		})
 
-		r.Route("/graphql", func(r chi.Router) {
-			// r.Use(h.authorizationHandler)
-			r.Post("/", GetDiscs)
+		r.Route("/orders", func(r chi.Router) {
+			r.Use(h.authorizationHandler)
+			// r.Post("/", h.customerNewOrderHandler)
 			// r.Get("/", h.customerOrdersHandler)
 		})
 	})
-
-	//public router
 
 	h.Router = r
 	return h
 }
 
-func RunServer() {
-	//move this logic to the router logic and use chi instead
+// this is the GraphQL server that we are running
+func RunGraphQLServer() {
+	//TODO: move this logic to the router logic and use chi instead
 	router := mux.NewRouter().StrictSlash(true)
 	var handler http.Handler
 	handler = http.HandlerFunc(GetDiscs)
